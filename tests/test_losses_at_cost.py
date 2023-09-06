@@ -1,7 +1,7 @@
 import pytest
 
-from simu import scenario
-from simu import losses
+from moopf import scenario
+from moopf import losses
 
 
 @pytest.fixture(scope='session')
