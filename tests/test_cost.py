@@ -21,6 +21,7 @@ def test_winter(inputs):
     p_kw = scenario.get_day_from_consumption_level(df, highest_consumption=True)
 
     model = cost.OptimizeCost()
+    model.grid_buy, model.grid_sell, model.grid_fee = 0.4, 0.068, 0.1
     model.solve(p_kw, {i: dict(batteries) for i in df.columns})
     assert round(model.actual_cost, 3) == 565.563
     assert model.is_complement
@@ -28,6 +29,7 @@ def test_winter(inputs):
 
     q_kvar = dfq.loc[p_kw.index[0]:p_kw.index[-1], :].copy()
     score = cost.Score(net)
+    score.grid_buy, score.grid_sell, score.grid_fee = 0.4, 0.068, 0.1
     score.score(p_kw, q_kvar, model.schedules["schedules"])
     assert score.actual_cost == model.actual_cost
     assert round(score.total_losses, 3) == 55.109  # 51.971
@@ -41,6 +43,7 @@ def test_winter_col(inputs):  # Minimize a community cost including grid fees
     p_kw = scenario.get_day_from_consumption_level(df, highest_consumption=True)
 
     model = cost.OptimizeCost()
+    model.grid_buy, model.grid_sell, model.grid_fee = 0.4, 0.068, 0.1
     model.solve_with_community_cost = True
     model.solve(p_kw, {i: dict(batteries) for i in df.columns})
     assert round(model.actual_cost, 3) == 564.197
@@ -49,6 +52,7 @@ def test_winter_col(inputs):  # Minimize a community cost including grid fees
 
     q_kvar = dfq.loc[p_kw.index[0]:p_kw.index[-1], :].copy()
     score = cost.Score(net)
+    score.grid_buy, score.grid_sell, score.grid_fee = 0.4, 0.068, 0.1
     score.solve_with_community_cost = True
     score.score(p_kw, q_kvar, model.schedules["schedules"])
     assert pytest.approx(score.actual_cost, abs=1e-6) == model.actual_cost
@@ -63,6 +67,7 @@ def test_summer(inputs):
     p_kw = scenario.get_day_from_consumption_level(df, highest_consumption=False)
 
     model = cost.OptimizeCost()
+    model.grid_buy, model.grid_sell, model.grid_fee = 0.4, 0.068, 0.1
     model.solve(p_kw, {i: dict(batteries) for i in df.columns})
     assert round(model.actual_cost, 3) == 118.763
     assert model.is_complement
@@ -70,6 +75,7 @@ def test_summer(inputs):
 
     q_kvar = dfq.loc[p_kw.index[0]:p_kw.index[-1], :].copy()
     score = cost.Score(net)
+    score.grid_buy, score.grid_sell, score.grid_fee = 0.4, 0.068, 0.1
     score.score(p_kw, q_kvar, model.schedules["schedules"])
     assert pytest.approx(score.actual_cost, abs=1) == model.actual_cost
     assert round(score.total_losses, 3) == 12.862  # 9.957
@@ -83,6 +89,7 @@ def test_summer_col(inputs):  # Minimize a community cost including grid fees
     p_kw = scenario.get_day_from_consumption_level(df, highest_consumption=False)
 
     model = cost.OptimizeCost()
+    model.grid_buy, model.grid_sell, model.grid_fee = 0.4, 0.068, 0.1
     model.solve_with_community_cost = True
     model.solve(p_kw, {i: dict(batteries) for i in df.columns})
     assert round(model.actual_cost, 3) == 95.873

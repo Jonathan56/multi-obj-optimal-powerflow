@@ -23,6 +23,7 @@ def test_winter_with_binaries(inputs):  # Binary model
     q_kvar = dfq.loc[p_kw.index[0]:p_kw.index[-1], :].copy()
 
     model = losses.OptimizeLosses()
+    model.grid_buy, model.grid_sell, model.grid_fee = 0.4, 0.068, 0.1
     model.include_binary_constraint = True
     model.MIPGap = 1e-4
     model.TimeLimit = 300
@@ -45,6 +46,7 @@ def test_winter(inputs):  # (normal case)
     q_kvar = dfq.loc[p_kw.index[0]:p_kw.index[-1], :].copy()
 
     model = losses.OptimizeLosses()
+    model.grid_buy, model.grid_sell, model.grid_fee = 0.4, 0.068, 0.1
     model.MIPGap = 1e-4
     model.TimeLimit = 300
     model.solve(net, p_kw, q_kvar, {i: dict(batteries) for i in df.columns})
@@ -61,6 +63,7 @@ def test_winter(inputs):  # (normal case)
 
     q_kvar = dfq.loc[p_kw.index[0]:p_kw.index[-1], :].copy()
     score = cost.Score(net)
+    score.grid_buy, score.grid_sell, score.grid_fee = 0.4, 0.068, 0.1
     score.score(p_kw, q_kvar, model.schedules["schedules"])
     assert pytest.approx(score.actual_cost, abs=1e-6) == model.actual_cost
     assert round(score.total_losses, 3) == round(model.total_losses, 3)
@@ -76,6 +79,7 @@ def test_winter_col(inputs):  # (normal case but collective cost)
     q_kvar = dfq.loc[p_kw.index[0]:p_kw.index[-1], :].copy()
 
     model = losses.OptimizeLosses()
+    model.grid_buy, model.grid_sell, model.grid_fee = 0.4, 0.068, 0.1
     model.solve_with_community_cost = True
     model.MIPGap = 1e-4
     model.TimeLimit = 300
@@ -98,6 +102,7 @@ def test_winter_no_efficiency(inputs):  # No efficiency in winter (to check impa
     q_kvar = dfq.loc[p_kw.index[0]:p_kw.index[-1], :].copy()
 
     model = losses.OptimizeLosses()
+    model.grid_buy, model.grid_sell, model.grid_fee = 0.4, 0.068, 0.1
     model.remove_battery_efficiency = True
     model.MIPGap = 1e-4
     model.TimeLimit = 300
@@ -120,6 +125,7 @@ def test_summer_no_efficiency(inputs):  # No efficiency in the summer necessary 
     q_kvar = dfq.loc[p_kw.index[0]:p_kw.index[-1], :].copy()
 
     model = losses.OptimizeLosses()
+    model.grid_buy, model.grid_sell, model.grid_fee = 0.4, 0.068, 0.1
     model.remove_battery_efficiency = True
     model.MIPGap = 1e-4
     model.TimeLimit = 300
@@ -137,6 +143,7 @@ def test_summer_no_efficiency(inputs):  # No efficiency in the summer necessary 
 
     q_kvar = dfq.loc[p_kw.index[0]:p_kw.index[-1], :].copy()
     score = cost.Score(net)
+    score.grid_buy, score.grid_sell, score.grid_fee = 0.4, 0.068, 0.1
     score.score(p_kw, q_kvar, model.schedules["schedules"])
     assert score.actual_cost == model.actual_cost
     assert pytest.approx(score.total_losses, abs=1e-3) == model.total_losses

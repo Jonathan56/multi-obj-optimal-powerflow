@@ -22,6 +22,7 @@ def test_winter(inputs):
     q_kvar = dfq.loc[p_kw.index[0]:p_kw.index[-1], :].copy()
 
     model = losses.OptimizeLosses()
+    model.grid_buy, model.grid_sell, model.grid_fee = 0.4, 0.068, 0.1
     model.MIPGap = 1e-2
     model.TimeLimit = 300
     model.solve(net, p_kw, q_kvar, {i: dict(batteries) for i in df.columns}, 580, 565.563)
@@ -42,6 +43,7 @@ def test_winter_col(inputs):  # Impose a constraint on collective cost in the lo
     q_kvar = dfq.loc[p_kw.index[0]:p_kw.index[-1], :].copy()
 
     model = losses.OptimizeLosses()
+    model.grid_buy, model.grid_sell, model.grid_fee = 0.4, 0.068, 0.1
     model.solve_with_community_cost = True
     model.MIPGap = 1e-2
     model.TimeLimit = 300
@@ -65,6 +67,7 @@ def test_summer(inputs):
     q_kvar = dfq.loc[p_kw.index[0]:p_kw.index[-1], :].copy()
 
     model = losses.OptimizeLosses()
+    model.grid_buy, model.grid_sell, model.grid_fee = 0.4, 0.068, 0.1
     model.remove_battery_efficiency = True
     model.MIPGap = 1e-4
     model.TimeLimit = 300
@@ -86,6 +89,7 @@ def test_summer_col(inputs):  # Impose a constraint on collective cost in the lo
     q_kvar = dfq.loc[p_kw.index[0]:p_kw.index[-1], :].copy()
 
     model = losses.OptimizeLosses()
+    model.grid_buy, model.grid_sell, model.grid_fee = 0.4, 0.068, 0.1
     model.solve_with_community_cost = True
     model.remove_battery_efficiency = True
     model.MIPGap = 1e-4

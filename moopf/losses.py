@@ -50,7 +50,7 @@ class OptimizeLosses(object):
 
     """
     def __init__(self, solve_with_community_cost=False, upstream_losses_percent=0.02,
-                 grid_buy=0.4, grid_sell=0.068, grid_fee=0.1, include_binary_constraint=False,
+                 grid_buy=0.2276, grid_sell=0.13, grid_fee=0.0315, include_binary_constraint=False,
                  remove_battery_efficiency=False, max_participant_netload=12, slack_bus_vm_pu=1.0,
                  complement_tolerance=1e-2, lower_battery_capacity_by=1.0, lower_battery_power_by=1.0, **_):
 
