@@ -2,8 +2,8 @@ import copy
 import pandas as pd
 import numpy as np
 from tqdm import tqdm
-from cost import OptimizeCost, Score
-from losses import OptimizeLosses
+from moopf.cost import OptimizeCost, Score
+from moopf.losses import OptimizeLosses
 import logging
 
 
