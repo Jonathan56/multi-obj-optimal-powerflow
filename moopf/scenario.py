@@ -37,7 +37,7 @@ def get_network_and_timeseries(pv_capacity_kw=3, battery_capacity_kwh=5, path=""
     # Load active power two participant at each node
     # https://selectra.info/energie/guides/conso/consommation-moyenne-electricite
     # Consumption of a 70m2 apartment 11 200 kWh/an
-    _dfp = pd.read_pickle(path + "inputs/fr_quoilin.pickle")
+    _dfp = pd.read_pickle(path + "examples/data/fr_quoilin.pickle")
 
     temp = (_dfp.sum(axis=0) / 4).to_frame("energy")
     temp = temp[temp.energy.between(8500, 14000)].copy()  # 9500 - 12500 (version with 13 households)
@@ -57,7 +57,7 @@ def get_network_and_timeseries(pv_capacity_kw=3, battery_capacity_kwh=5, path=""
     assert _dfp[9].iloc[56] / np.sqrt(_dfp[9].iloc[56] ** 2 + _dfq[9].iloc[56] ** 2) == pytest.approx(0.9, abs=1e-6)
 
     # Production profiles in active power : https://re.jrc.ec.europa.eu/pvg_tools/en/
-    pv = pd.read_csv(path + "./inputs/Timeseries_45.752_4.949_SA2_1kWp_crystSi_14_37deg_-2deg_2018_2020.csv",
+    pv = pd.read_csv(path + "examples/data/Timeseries_45.752_4.949_SA2_1kWp_crystSi_14_37deg_-2deg_2018_2020.csv",
                      parse_dates=[0], index_col=[0], header=8, skipfooter=13, engine='python',
                      date_parser=lambda x: datetime.strptime(x, '%Y%m%d:%H%M'))
 
